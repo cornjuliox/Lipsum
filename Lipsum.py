@@ -1,63 +1,23 @@
 import random
-import string
-import os
-from timeit import Timer
 
-# It's been about a few monthss since I first wrote this function. I realize now that
-# it was a mistake to try and turn that thing into a class.
-def GenerateLipsum(f_path, max_words=250, clean=False):
-        """ Generates a "Lipsum" - a block of dummy text used for testing page layouts in Web Design.
-        takes 3 arguments:
-                f_path    - Path to the file that is to be used as the Lipsum source.
-                max_words - The length of the desired lipsum, defaults to 250.
-                clean     - Determines whether or not to clean the Lipsum, meaning strip out all the
-                            punctuation.
-        
-        Returns a string.
-        """
-        f_obj = open(f_path, "rb")
-        draft = f_obj.read()
-        newseq = []
-        if clean == True:
-                table = string.maketrans(string.lowercase, string.lowercase)
-                draft_2 = draft.translate(table, string.punctuation)
-                draft_3 = draft_2.split()
-                for x in range(0, max_words):
-                        newseq.append(random.choice(draft_3))
-                return " ".join(newseq)
-        else:
-                draft = draft.split()
-                for x in range(0, max_words):
-                        newseq.append(random.choice(draft))
-                f_obj.close()
-                return " ".join(newseq)
+# debating on whether or not I should put this in a separate file, or
+# just keep it as is.
+block_of_text = """But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was
+born and I will give you a complete account of the system and expound the actual teachings of the great explorer
+of the truth the master-builder of human happiness No one rejects dislikes, or avoids pleasure itself because it
+is pleasure but because those who do not know how to pursue pleasure rationally encounter consequences that are
+extremely painful Nor again is there anyone who loves or pursues or desires to obtain pain of itself because it is
+pain but because occasionally circumstances occur in which toil and pain can procure him some great pleasure To take
+a trivial example which of us ever undertakes laborious physical exercise except to obtain some advantage from it
+But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences or
+one who avoids a pain that produces no resultant pleasure """
 
-        
-if __name__ == "__main__":
-    # There is be a better way to write these tests, but this should do for now. I SPOTTED THE SECRET LETTER
-    test_books = ["The Art of War by Sun Tzu.txt" ,"The Practice and Science of Drawing.txt",
-                "Manners Custom and Dress of the Middle Ages.txt"]
-    results = []
-    for x in test_books:
-        if not os.path.exists(x):
-            print "%s was not found. The built-in test will not work without it."
-        else:
-            # I <3 Python.
-            results.append(GenerateLipsum(x))
-
-    print "Standard lipsums, generated from test files."
-    for x in results:
-        print "--------------------------------"
-        print "Standard lipsum, len(result) = %s words" % (len(x.split()))
-        print "--------------------------------"
-        print x
-        print "--------------------------------"
-        print "--------------------------------"
-        print
-        
-    print
-    print "TEST COMPLETE"
-    
-
-
-    
+def GenerateLipsum(length=1):
+    """
+    Generates a block of text, randomly selecting from the block_of_text in Lipsum.py, up
+    to 'length'. 'length' defaults to 1 if not provided.
+    """
+    # single line unreadability!
+    return " ".join([
+        block_of_text.split()[random.randint(1,len(block_of_text.split())-1)] for x in xrange(0,length)
+    ])
